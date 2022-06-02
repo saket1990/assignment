@@ -1,6 +1,6 @@
+const x=function welcome(){
+let text="welcome to my application. I am Saket and a part of FunctionUp cohort"
+let xyz=text.welcome()
+console.log(xyz)}
 
-const abc=function welcome(){
-    console.log("welcome to my application. I am Saket and a part of FunctionUp cohort")
-}
-
-module.exports.abc = abc
+module.exports.x = x

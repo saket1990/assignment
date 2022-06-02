@@ -1,9 +1,8 @@
 const express = require('express');
-const { abc } = require('../logger/logger');
-const externalModule = require('../logger/logger.js');
-const {info} = require('../util/helper');
-const {format}= require('../validator/formatter');
-//const externalModule = require('./validator/formatter.js');
+const externalModule=require('./logger')
+const externalModule1= require('../validator/formatter.js')
+const externalModule2 = require('../logger/logger.js');
+const externalModule3 = require('../util/helper.js');
 
 const router = express.Router();
 
@@ -15,8 +14,8 @@ router.get('/test-me', function (req, res) {
 });
 
 router.get('/test-me1', function (req, res) {
-    console.log(abc)
-    externalModule.abc
+    console.log(externalModule2.x)
+    externalModule2.x
     res.send('hi first assignment')
 });
 
@@ -24,15 +23,19 @@ router.get('/test-me2', function (req, res) {
     console.log('date'+externalModule.date)
     console.log('month'+externalModule.month)
     console.log(info)
-    externalModule.info
+    externalModule3.date
+    externalModule3.month
+    externalModule3.info
     res.send('current date,current month,info')
 });
 
 router.get('/test-me3', function (req, res) {
-    console.log(format)
-    externalModule.a
-    externalModule.b
-    externalModule.c
+    console.log(a);
+    console.log(b);
+    console.log(c);
+    externalModule1.a
+    externalModule1.b
+    externalModule1.c
     res.send('hi we r formtting string')
 });
 
