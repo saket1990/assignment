@@ -1,6 +1,32 @@
 const express = require('express');
 const router = express.Router();
 
+let players =[
+    {
+        "name":"saket","dob":"26/09/1990","gender":"male","city":"patna","sports":["football"]
+    },
+    {
+        "name":"sanket","dob":"05/01/1994","gender":"male","city":"delhi","sports":["hockey"]
+    },
+    {
+        "name":"samet","dob":"02/05/1998","gender":"male","city":"bihar","sports":["cricket","football"]
+    },
+   
+]
+
+router.post('/players', function(req, res){
+    let array=[{"name":"arti","dob":"23/08/1989","gender":"female","city":"madhubani","sports":["ludo","carom"]}]
+    let addname=players.push(array)
+    console.log(addname)
+    console.log(req.body.JSON)
+
+    res.send({data:players,status:true})
+})
+
+
+
+
+
 router.get('/students/:name', function(req, res) {
     let studentName = req.params.name
     console.log(studentName)
