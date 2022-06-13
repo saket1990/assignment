@@ -1,4 +1,6 @@
 const UserModel= require("../models/userModel")
+const Document= require("../models/userModel")
+
 
 
 
@@ -40,6 +42,11 @@ const createUser= async function (req, res) {
 const getUsersData= async function (req, res) {
     let allUsers= await UserModel.find()
     res.send({msg: allUsers})
+}
+
+const postUsersDocument= async function(req, res){
+    let document=req.header
+    
 }
 
 module.exports.createUser= createUser
