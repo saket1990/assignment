@@ -1,15 +1,11 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
 
-const createUser = async function (abcd, xyz) {
-  //You can name the req, res objects anything.
-  //but the first parameter is always the request 
-  //the second parameter is always the response
-  let data = abcd.body;
-  let savedData = await userModel.create(data);
-  console.log(abcd.newAtribute);
-  xyz.send({ msg: savedData });
-};
+const createUser = async function(req, res){
+  let data=req.body
+  let savedata=await userModel.create(data)
+  res.send({msg:savedata})
+}
 
 const loginUser = async function (req, res) {
   let userName = req.body.emailId;
@@ -31,7 +27,7 @@ const loginUser = async function (req, res) {
   let token = jwt.sign(
     {
       userId: user._id.toString(),
-      batch: "thorium",
+      batch: "radon",
       organisation: "FunctionUp",
     },
     "functionup-radon"
@@ -80,11 +76,19 @@ const updateUser = async function (req, res) {
   }
 
   let userData = req.body;
-  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
-  res.send({ status: updatedUser, data: updatedUser });
+  let updatedUser = await userModel.findOneAndUpdate({ _id: userData }, {$set:{userData:true}},{new:true,upsert:true});
+  res.send({ status: true, data: updatedUser });
 };
+
+let deleteUser=async function(req,res){
+  let userId=req.params.userId
+  let userDetails=await userModel.updateOne({_id:userId},{$set:{isDeleted:true}},{new:true, upsert:true})
+  if(!userId){res.send({status:true,msg:"user deleted"})}
+  else{res.send({status:false,userDetails})}
+}
 
 module.exports.createUser = createUser;
 module.exports.getUserData = getUserData;
 module.exports.updateUser = updateUser;
 module.exports.loginUser = loginUser;
+module.exports.deleteUser = deleteUser
