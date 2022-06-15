@@ -1,23 +1,31 @@
+const jwt=require("jsonwebtoken")
 
-
-const mid1= function(req,res,next){
+const authenticate= function(req,res,next){
     let middleware=req.headers
-    let apptype=middleware["x-auth-token"]
-    if(!apptype){
-        apptype=headers["x-auth-token"]
+    let token=middleware["x-Auth-Token"]
+    if(!token){
+        token=req.headers["x-auth-token"]
     }
-    if(!apptype){
+    if(!token){
         return res.send({status:false,message:"a mandatory header is missing"})
     }
-    if(apptype=="true"){
-        req.apptype["x-auth-token"]=true
-    }else{
-        return res.send({sattus:true,message:"valid token required"})
-    }
+    
     let decodedToken= jwt.verify(token,"functionup-radon");
     if(!decodedToken){
         return res.send({status:false,message:"token is invalid"})
     }
     next()
 }
-module.exports.mid1=mid1
+const authorise= function(req,res,next){
+    let token=req.headers["x-auth-token"]
+    let decodedToken= jwt.verify(token,"functionup-radon")
+    if(!decodedToken) return res.send({status:false, msg:"token is invalid"})
+
+    let usermodified=req.params.userId
+    let userLoggedIn=decodedToken.userId
+    if(usermodified !=userLoggedIn) return res.send({status:false,msg:"user logged is not allowed to modify the requseted users data"})
+    next()
+}
+
+module.exports.authenticate=authenticate
+module.exports.authorise=authorise
