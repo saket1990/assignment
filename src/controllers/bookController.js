@@ -14,7 +14,7 @@ const createBook = async function (req, res) {
     }
     catch (err) {
         console.log("This is the error :", err.message)
-        res.status(500).send({ msg: "Error", error: err.message })
+        res.status(404).send({ msg: "Error", error: err.message })
     }
 }
 
@@ -60,14 +60,23 @@ const createBook = async function (req, res) {
 
 
 const getBooksData = async function (req, res) {
+try{
     let allBooks = await BookModel.find({ authorName: "HO" })
     console.log(allBooks)
-    if (allBooks.length > 0) res.send({ msg: allBooks, condition: true })
-    else res.send({ msg: "No books found", condition: false })
+    if (allBooks.length > 0) res.status(200).send({ msg: allBooks, condition: true })
+    else res.status(404).send({ msg: "No books found", condition: false })
+
+    res.status(404).send({ msg: "Error", error: err.message })
+}
+catch (err) {
+    console.log("This is the error :", err.message)
+    res.status(404).send({ msg: "Error", error: err.message })
+}
 }
 
 
 const updateBooks = async function (req, res) {
+try{    
     let data = req.body // {sales: "1200"}
     // let allBooks= await BookModel.updateMany( 
     //     { author: "SK"} , //condition
@@ -78,11 +87,14 @@ const updateBooks = async function (req, res) {
         { $set: data }, //update in data
         { new: true, upsert: true } ,// new: true - will give you back the updated document // Upsert: it finds and updates the document but if the doc is not found(i.e it does not exist) then it creates a new document i.e UPdate Or inSERT
     )
-
-    res.send({ msg: allBooks })
-}
+        res.status(200).send({ msg: allBooks })}
+catch (err) {
+    console.log("This is the error :", err.message)
+    res.status(500).send({ msg: "Error", error: err.message })
+}}
 
 const deleteBooks = async function (req, res) {
+    try{
     // let data = req.body 
     let allBooks = await BookModel.updateMany(
         { authorName: "FI" }, //condition
@@ -90,12 +102,17 @@ const deleteBooks = async function (req, res) {
         { new: true } ,
     )
 
-    res.send({ msg: allBooks })
+    res.status(401).send({ msg: allBooks })
 }
+catch (err) {
+    console.log("This is the error :", err.message)
+    res.status(500).send({ msg: "Error", error: err.message })
+}}
 
 
 
 const totalSalesPerAuthor = async function (req, res) {
+    try{
     // let data = req.body 
     let allAuthorSales = await BookModel.aggregate(
         [
@@ -104,8 +121,11 @@ const totalSalesPerAuthor = async function (req, res) {
         ]
     )
 
-    res.send({ msg: allAuthorSales })
+    res.status(401).send({ msg: allAuthorSales })
 }
+catch (err) {
+    res.status(500).send({ msg: "Error", error: err.message })
+}}
 
 
 
